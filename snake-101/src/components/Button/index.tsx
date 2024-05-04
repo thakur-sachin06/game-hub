@@ -3,14 +3,24 @@ import click from "../../sounds/click.wav";
 
 import "./ButtonStyles.css";
 
-const Button = ({ name, onClick }: { name: string; onClick: () => void }) => {
+const Button = ({
+  name,
+  onClick,
+  isSoundOn,
+}: {
+  name: string;
+  onClick: () => void;
+  isSoundOn: boolean;
+}) => {
   const [play] = useSound(click);
 
   return (
     <div
-      className="button"
+      className={`button ${
+        name === "Play" || name === "Play again" ? "play-button" : ""
+      }`}
       onClick={() => {
-        play();
+        if (isSoundOn) play();
         onClick();
       }}
     >

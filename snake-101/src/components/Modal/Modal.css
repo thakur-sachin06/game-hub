@@ -1,0 +1,42 @@
+.modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 40px 60px;
+  height: 200px;
+  border-radius: 4px;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: black;
+  opacity: 0.4;
+}
+
+.modal-header {
+  font-size: 25px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #12c2e9 0%, #c471ed 50%, #f64f59 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+}
+
+/* 
+.score-card {
+
+} */

@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 const SNAKE_DIRECTION = {
   RIGHT: "RIGHT",
   LEFT: "LEFT",
@@ -17,7 +18,14 @@ const BOARD = {
   width: 1000,
 };
 
-const OBJECT_SIZE = 21;
+const OBJECT_SIZE = 20;
 
-// eslint-disable-next-line react-refresh/only-export-components
-export { SNAKE_DIRECTION, ALLOWED_DIRECTIONS, BOARD, OBJECT_SIZE };
+const INITIAL_GAME_SPEED = 100;
+
+export {
+  SNAKE_DIRECTION,
+  ALLOWED_DIRECTIONS,
+  BOARD,
+  OBJECT_SIZE,
+  INITIAL_GAME_SPEED,
+};

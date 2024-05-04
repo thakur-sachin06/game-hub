@@ -2,16 +2,6 @@
   box-sizing: border-box;
 }
 
-#root {
-  position: absolute;
-  height: 100%;
-}
-
 body {
   background-image: url("./assests/img.jpg");
-}
-
-.container {
-  margin-left: 200px;
-  margin-top: 40px;
 }

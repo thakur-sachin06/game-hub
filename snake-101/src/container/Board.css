@@ -3,15 +3,60 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .canvas {
   box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
   border-radius: 4px;
-  margin-top: 30px;
+  margin-top: 20px;
   background: radial-gradient(
     circle,
     rgb(198, 236, 187) 0%,
     rgb(183, 233, 148) 100%
   );
+}
+
+.game-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.score-card {
+  text-transform: uppercase;
+  background-image: linear-gradient(
+    -225deg,
+    #8b0c69 0%,
+    #44107a 29%,
+    #9d405f 67%,
+    #33a805 100%
+  );
+  background-size: auto auto;
+  background-clip: border-box;
+  background-size: 200% auto;
+  color: #fff;
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textclip 2s linear infinite;
+  display: inline-block;
+  font-size: 30px;
+  font-weight: 800;
+  margin-left: auto;
+}
+
+@keyframes textclip {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.sound-icon {
+  width: 30px;
+  cursor: pointer;
 }

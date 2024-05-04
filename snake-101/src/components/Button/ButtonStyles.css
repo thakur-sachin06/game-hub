@@ -2,10 +2,12 @@
   position: relative;
   display: inline-block;
   margin-right: 20px;
+  cursor: pointer;
 }
 
 .button a {
   color: rgb(105, 255, 127);
+
   font-family: Helvetica, sans-serif;
   font-weight: bold;
   font-size: 20px;
@@ -15,6 +17,7 @@
   display: block;
   position: relative;
   padding: 6px 20px;
+  cursor: pointer;
 
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   text-shadow: 0px 1px 0px #000;
@@ -51,4 +54,34 @@
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
+}
+
+.play-button {
+  animation: wiggle 2s linear infinite;
+}
+
+@keyframes wiggle {
+  0%,
+  7% {
+    transform: rotateZ(0);
+  }
+  15% {
+    transform: rotateZ(-15deg);
+  }
+  20% {
+    transform: rotateZ(10deg);
+  }
+  25% {
+    transform: rotateZ(-10deg);
+  }
+  30% {
+    transform: rotateZ(6deg);
+  }
+  35% {
+    transform: rotateZ(-4deg);
+  }
+  40%,
+  100% {
+    transform: rotateZ(0);
+  }
 }
