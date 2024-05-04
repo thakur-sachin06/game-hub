@@ -1,16 +1,10 @@
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
-
-import "./Board.css";
+import { useCallback, useEffect, useRef, useState } from "react";
 import SnakeEngine from "./Snake";
 import { SnakeDirectionType } from "./types";
 import { ALLOWED_DIRECTIONS, BOARD } from "../constants";
 import GameHeader from "./GameHeader";
+
+import "./Board.css";
 
 function SnakeBoard() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -21,7 +15,8 @@ function SnakeBoard() {
     useState<SnakeDirectionType>("RIGHT");
 
   // Game play status state
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean | null>(null);
+  const [isPaused, setIsPaused] = useState<boolean>(false);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
 
   useEffect(() => {
@@ -71,32 +66,49 @@ function SnakeBoard() {
     }
   }, [context, snakeDirection]);
 
+  const initializeGameState = useCallback(() => {
+    setContext(null);
+    snakes.current = null;
+    setIsPlaying(null);
+    setIsPaused(false);
+  }, []);
+
   const handleGamePlay = useCallback((isPlaying: boolean) => {
     setIsPlaying(isPlaying);
   }, []);
 
-  const handleIsGameOver = useCallback((isPlaying: boolean) => {
-    setIsGameOver(isPlaying);
+  const handleIsGameOver = useCallback(
+    (isPlaying: boolean) => {
+      setIsGameOver(isPlaying);
+      initializeGameState();
+    },
+    [initializeGameState]
+  );
+
+  const handlePauseGame = useCallback((isPaused: boolean) => {
+    setIsPaused(isPaused);
   }, []);
 
   const handleRestartGame = useCallback(() => {
-    setContext(null);
-    snakes.current = null;
+    initializeGameState();
   }, []);
 
   useEffect(() => {
     const id = setInterval(() => {
-      if (snakes.current && isPlaying) {
+      if (snakes.current && isPlaying && !isPaused && !isGameOver) {
         snakes.current.moveSnake(snakeDirection, handleIsGameOver);
       }
     }, snakeSpeed);
 
-    if (!isPlaying) {
-      clearInterval(id);
-    }
-
     return () => clearInterval(id);
-  }, [handleIsGameOver, isPlaying, snakeDirection, snakeSpeed]);
+  }, [
+    handleIsGameOver,
+    isGameOver,
+    isPaused,
+    isPlaying,
+    snakeDirection,
+    snakeSpeed,
+  ]);
 
   return (
     <div className="game-container">
@@ -104,7 +116,8 @@ function SnakeBoard() {
         handleGamePlay={handleGamePlay}
         isPlaying={isPlaying}
         handleRestartGame={handleRestartGame}
-        isGameOver={isGameOver}
+        handlePauseGame={handlePauseGame}
+        isPaused={isPaused}
       />
       <canvas
         ref={canvasRef}

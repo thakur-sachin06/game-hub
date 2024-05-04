@@ -1,4 +1,5 @@
-import { BOARD, SNAKE_DIRECTION } from "../constants";
+import { BOARD, OBJECT_SIZE, SNAKE_DIRECTION } from "../constants";
+import { getRandomFoodPosition } from "../helpers";
 import { SnakeDirectionType } from "./types";
 
 interface SnakeCordsIF {
@@ -8,27 +9,81 @@ interface SnakeCordsIF {
 
 class SnakeEngine {
   snakeCords: Array<SnakeCordsIF> = [
-    { x: 21, y: 0 },
+    { x: 20, y: 0 },
     { x: 0, y: 0 },
   ];
   canvasContext: CanvasRenderingContext2D | null = null;
   snakeDirection = SNAKE_DIRECTION.RIGHT;
-  isPlaying = false;
-  isGameOver = false;
+  foodCords: SnakeCordsIF = getRandomFoodPosition();
 
   constructor(canvasContext: CanvasRenderingContext2D) {
     this.canvasContext = canvasContext;
-    this.drawSnake(this.snakeCords);
+    this.drawSnake(this.snakeCords, true);
   }
 
-  drawSnake(newSnakeCords: Array<SnakeCordsIF>) {
+  redrawFoodObject() {
+    if (this.canvasContext) {
+      this.canvasContext.fillStyle = "red";
+      this.canvasContext?.fillRect(this.foodCords.x, this.foodCords.y, 20, 20);
+    }
+  }
+
+  drawRandomFoodObject() {
+    if (this.canvasContext) {
+      const foodCords = getRandomFoodPosition();
+      this.foodCords = foodCords;
+      this.canvasContext.fillStyle = "red";
+      this.canvasContext?.fillRect(foodCords.x, foodCords.y, 20, 20);
+    }
+  }
+
+  detectEatFood(headCords: SnakeCordsIF) {
+    if (headCords.x === this.foodCords.x && headCords.y === this.foodCords.y) {
+      return true;
+    }
+    return false;
+  }
+
+  drawSnakeEyes(headCords: SnakeCordsIF) {}
+
+  drawSnake(
+    newSnakeCords: Array<SnakeCordsIF>,
+    shouldRedrawFoodObject: boolean
+  ) {
     this.snakeCords = newSnakeCords;
     if (this.canvasContext) {
       this.canvasContext.clearRect(0, 0, BOARD.width, BOARD.height);
+      shouldRedrawFoodObject
+        ? this.redrawFoodObject()
+        : this.drawRandomFoodObject();
       this.snakeCords.forEach((position: SnakeCordsIF, index: number) => {
         if (this.canvasContext) {
-          this.canvasContext.fillStyle = index === 0 ? "green" : "black";
+          this.canvasContext.fillStyle = index === 0 ? "green" : "orange";
           this.canvasContext?.fillRect(position.x, position.y, 20, 20);
+          if (index === 0) {
+            const radius = 3;
+            this.canvasContext.beginPath();
+            this.canvasContext.arc(
+              position.x + 14,
+              position.y + 4,
+              radius,
+              0,
+              2 * Math.PI
+            );
+            this.canvasContext.fillStyle = "black"; // Fill color for the circle
+            this.canvasContext.fill();
+
+            this.canvasContext.beginPath();
+            this.canvasContext.arc(
+              position.x + 14,
+              position.y + 14,
+              radius,
+              0,
+              2 * Math.PI
+            );
+            this.canvasContext.fillStyle = "black"; // Fill color for the circle
+            this.canvasContext.fill();
+          }
         }
       });
     }
@@ -69,18 +124,17 @@ class SnakeEngine {
 
   moveSnake(
     direction: SnakeDirectionType = "RIGHT",
-    handleIsPlaying: (_: boolean) => void
+    handleIsGameOver: (_: boolean) => void
   ) {
     let finalSnakeCords: Array<SnakeCordsIF> = [];
 
-    if (this.isGameOver) return;
     switch (direction) {
       case "BOTTOM": {
         let newCords = [...this.snakeCords];
         newCords = [
           {
             x: newCords[0].x + 0,
-            y: newCords[0].y + 21,
+            y: newCords[0].y + 20,
           },
           ...newCords,
         ];
@@ -92,7 +146,7 @@ class SnakeEngine {
         let newCords = [...this.snakeCords];
         newCords = [
           {
-            x: newCords[0].x + 21,
+            x: newCords[0].x + 20,
             y: newCords[0].y + 0,
           },
           ...newCords,
@@ -105,7 +159,7 @@ class SnakeEngine {
         let newCords = [...this.snakeCords];
         newCords = [
           {
-            x: newCords[0].x - 21,
+            x: newCords[0].x - 20,
             y: newCords[0].y + 0,
           },
           ...newCords,
@@ -119,7 +173,7 @@ class SnakeEngine {
         newCords = [
           {
             x: newCords[0].x,
-            y: newCords[0].y - 21,
+            y: newCords[0].y - 20,
           },
           ...newCords,
         ];
@@ -129,9 +183,22 @@ class SnakeEngine {
       }
     }
     if (!this.detectBoundaryHit(finalSnakeCords, direction)) {
-      this.drawSnake(finalSnakeCords);
+      if (this.detectEatFood(finalSnakeCords[0])) {
+        let newCords = [...finalSnakeCords];
+        newCords = [
+          ...newCords,
+          {
+            x: newCords[0].x,
+            y: newCords[0].y - 20,
+          },
+        ];
+        finalSnakeCords = newCords;
+        this.drawSnake(finalSnakeCords, false);
+      } else {
+        this.drawSnake(finalSnakeCords, true);
+      }
     } else {
-      handleIsPlaying(true);
+      handleIsGameOver(true);
     }
   }
 }

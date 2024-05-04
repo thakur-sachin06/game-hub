@@ -17,5 +17,7 @@ const BOARD = {
   width: 1000,
 };
 
+const OBJECT_SIZE = 21;
+
 // eslint-disable-next-line react-refresh/only-export-components
-export { SNAKE_DIRECTION, ALLOWED_DIRECTIONS, BOARD };
+export { SNAKE_DIRECTION, ALLOWED_DIRECTIONS, BOARD, OBJECT_SIZE };

@@ -1,5 +1,5 @@
 import "./App.css";
-import SnakeBoard from "./components/SnakeBoard";
+import SnakeBoard from "./container/SnakeBoard";
 
 function App() {
   return (

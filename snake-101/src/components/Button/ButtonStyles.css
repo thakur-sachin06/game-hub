@@ -1,6 +1,7 @@
 .button {
   position: relative;
   display: inline-block;
+  margin-right: 20px;
 }
 
 .button a {
