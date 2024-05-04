@@ -1,0 +1,12 @@
+const SNAKE_DIRECTION = {
+  RIGHT: "RIGHT",
+  LEFT: "LEFT",
+  TOP: "TOP",
+  BOTTOM: "BOTTOM",
+};
+
+const ALLOWED_DIRECTIONS = {
+  TOP: ["LEFT", "RIGHT"],
+};
+
+export { SNAKE_DIRECTION, ALLOWED_DIRECTIONS };
