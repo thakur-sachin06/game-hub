@@ -12,4 +12,10 @@ const ALLOWED_DIRECTIONS = {
   BOTTOM: ["LEFT", "RIGHT"],
 };
 
-export { SNAKE_DIRECTION, ALLOWED_DIRECTIONS };
+const BOARD = {
+  height: 650,
+  width: 1000,
+};
+
+// eslint-disable-next-line react-refresh/only-export-components
+export { SNAKE_DIRECTION, ALLOWED_DIRECTIONS, BOARD };

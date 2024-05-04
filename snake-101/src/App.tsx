@@ -4,7 +4,9 @@ import SnakeBoard from "./components/SnakeBoard";
 function App() {
   return (
     <>
-      <SnakeBoard />
+      <div className="container">
+        <SnakeBoard />
+      </div>
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { SNAKE_DIRECTION } from "../constants";
+import { BOARD, SNAKE_DIRECTION } from "../constants";
 import { SnakeDirectionType } from "./types";
 
 interface SnakeCordsIF {
@@ -8,91 +8,130 @@ interface SnakeCordsIF {
 
 class SnakeEngine {
   snakeCords: Array<SnakeCordsIF> = [
-    { x: 0, y: 0 },
     { x: 21, y: 0 },
+    { x: 0, y: 0 },
   ];
   canvasContext: CanvasRenderingContext2D | null = null;
   snakeDirection = SNAKE_DIRECTION.RIGHT;
+  isPlaying = false;
+  isGameOver = false;
+
   constructor(canvasContext: CanvasRenderingContext2D) {
     this.canvasContext = canvasContext;
     this.drawSnake(this.snakeCords);
   }
 
-  drawSnake(snakeCords: Array<SnakeCordsIF>) {
-    this.snakeCords = snakeCords;
+  drawSnake(newSnakeCords: Array<SnakeCordsIF>) {
+    this.snakeCords = newSnakeCords;
     if (this.canvasContext) {
-      this.canvasContext.clearRect(0, 0, 800, 600);
-      this.canvasContext.fillStyle = "black";
-      snakeCords.forEach((position: SnakeCordsIF) => {
-        this.canvasContext?.fillRect(position.x, position.y, 20, 20);
+      this.canvasContext.clearRect(0, 0, BOARD.width, BOARD.height);
+      this.snakeCords.forEach((position: SnakeCordsIF, index: number) => {
+        if (this.canvasContext) {
+          this.canvasContext.fillStyle = index === 0 ? "green" : "black";
+          this.canvasContext?.fillRect(position.x, position.y, 20, 20);
+        }
       });
     }
   }
 
-  moveSnake(direction?: SnakeDirectionType) {
-    if (direction) {
-      switch (direction) {
-        case "BOTTOM": {
-          let newCords = [...this.snakeCords];
-          newCords = [
-            {
-              x: newCords[0].x + 0,
-              y: newCords[0].y + 21,
-            },
-            ...newCords,
-          ];
-          newCords.pop();
-          this.drawSnake(newCords);
-          break;
+  detectBoundaryHit(
+    newSnakeCords: Array<SnakeCordsIF>,
+    direction: SnakeDirectionType
+  ) {
+    const head: SnakeCordsIF = newSnakeCords[0];
+    switch (direction) {
+      case "RIGHT": {
+        if (head.x > BOARD.width) {
+          return true;
         }
-        case "RIGHT": {
-          let newCords = [...this.snakeCords];
-          newCords = [
-            {
-              x: newCords[0].x + 21,
-              y: newCords[0].y + 0,
-            },
-            ...newCords,
-          ];
-          newCords.pop();
-          this.drawSnake(newCords);
-          break;
-        }
-        case "LEFT": {
-          let newCords = [...this.snakeCords];
-          newCords = [
-            {
-              x: newCords[0].x - 21,
-              y: newCords[0].y + 0,
-            },
-            ...newCords,
-          ];
-          newCords.pop();
-          this.drawSnake(newCords);
-          break;
-        }
-        case "TOP": {
-          let newCords = [...this.snakeCords];
-          newCords = [
-            {
-              x: newCords[0].x,
-              y: newCords[0].y - 21,
-            },
-            ...newCords,
-          ];
-          newCords.pop();
-          this.drawSnake(newCords);
-          break;
-        }
+        return false;
       }
+      case "LEFT": {
+        if (head.x < 0) {
+          return true;
+        }
+        return false;
+      }
+      case "TOP": {
+        if (head.y < 0) {
+          return true;
+        }
+        return false;
+      }
+      case "BOTTOM": {
+        if (head.y > BOARD.height) {
+          return true;
+        }
+        return false;
+      }
+    }
+  }
+
+  moveSnake(
+    direction: SnakeDirectionType = "RIGHT",
+    handleIsPlaying: (_: boolean) => void
+  ) {
+    let finalSnakeCords: Array<SnakeCordsIF> = [];
+
+    if (this.isGameOver) return;
+    switch (direction) {
+      case "BOTTOM": {
+        let newCords = [...this.snakeCords];
+        newCords = [
+          {
+            x: newCords[0].x + 0,
+            y: newCords[0].y + 21,
+          },
+          ...newCords,
+        ];
+        newCords.pop();
+        finalSnakeCords = newCords;
+        break;
+      }
+      case "RIGHT": {
+        let newCords = [...this.snakeCords];
+        newCords = [
+          {
+            x: newCords[0].x + 21,
+            y: newCords[0].y + 0,
+          },
+          ...newCords,
+        ];
+        newCords.pop();
+        finalSnakeCords = newCords;
+        break;
+      }
+      case "LEFT": {
+        let newCords = [...this.snakeCords];
+        newCords = [
+          {
+            x: newCords[0].x - 21,
+            y: newCords[0].y + 0,
+          },
+          ...newCords,
+        ];
+        newCords.pop();
+        finalSnakeCords = newCords;
+        break;
+      }
+      case "TOP": {
+        let newCords = [...this.snakeCords];
+        newCords = [
+          {
+            x: newCords[0].x,
+            y: newCords[0].y - 21,
+          },
+          ...newCords,
+        ];
+        newCords.pop();
+        finalSnakeCords = newCords;
+        break;
+      }
+    }
+    if (!this.detectBoundaryHit(finalSnakeCords, direction)) {
+      this.drawSnake(finalSnakeCords);
     } else {
-      const newCords = this.snakeCords.map((elt: SnakeCordsIF) => {
-        return {
-          x: elt.x + 20,
-          y: elt.y,
-        };
-      });
-      this.drawSnake(newCords);
+      handleIsPlaying(true);
     }
   }
 }
