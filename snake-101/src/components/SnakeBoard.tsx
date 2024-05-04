@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import "./Board.css";
 import SnakeEngine from "./Snake";
 import { SnakeDirectionType } from "./types";
+import { ALLOWED_DIRECTIONS } from "../constants";
 
 function SnakeBoard() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -16,31 +17,38 @@ function SnakeBoard() {
     setContext(canvasRef.current && canvasRef.current.getContext("2d"));
     if (context) {
       snakes.current = new SnakeEngine(context);
-      console.log("ayaya", snakes.current);
       window.onkeydown = (e) => {
         switch (e.key) {
           case "w":
           case "ArrowUp":
-            setSnakeDirection("TOP");
+            if (ALLOWED_DIRECTIONS[snakeDirection].includes("TOP")) {
+              setSnakeDirection("TOP");
+            }
             break;
           case "s":
           case "ArrowDown":
-            setSnakeDirection("BOTTOM");
+            if (ALLOWED_DIRECTIONS[snakeDirection].includes("BOTTOM")) {
+              setSnakeDirection("BOTTOM");
+            }
             break;
           case "d":
           case "ArrowRight":
-            setSnakeDirection("RIGHT");
+            if (ALLOWED_DIRECTIONS[snakeDirection].includes("RIGHT")) {
+              setSnakeDirection("RIGHT");
+            }
             break;
           case "a":
           case "ArrowLeft":
-            setSnakeDirection("LEFT");
+            if (ALLOWED_DIRECTIONS[snakeDirection].includes("LEFT")) {
+              setSnakeDirection("LEFT");
+            }
             break;
           default:
             break;
         }
       };
     }
-  }, [context]);
+  }, [context, snakeDirection]);
 
   useEffect(() => {
     const id = setInterval(() => {

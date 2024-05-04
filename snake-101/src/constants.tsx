@@ -7,6 +7,9 @@ const SNAKE_DIRECTION = {
 
 const ALLOWED_DIRECTIONS = {
   TOP: ["LEFT", "RIGHT"],
+  LEFT: ["TOP", "BOTTOM"],
+  RIGHT: ["TOP", "BOTTOM"],
+  BOTTOM: ["LEFT", "RIGHT"],
 };
 
 export { SNAKE_DIRECTION, ALLOWED_DIRECTIONS };
