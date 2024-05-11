@@ -1,4 +1,4 @@
-import { BOARD, OBJECT_SIZE } from "./constants";
+import { BOARD, OBJECT_SIZE } from "../constants";
 
 const getRandomFoodPosition = () => {
   const xCord = Math.abs(Math.floor(Math.random() * BOARD.width) - OBJECT_SIZE);

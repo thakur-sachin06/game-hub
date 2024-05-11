@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import Button from "../components/Button";
+import Button from "../../../components/Button";
 
 import SoundonLogo from "../assests/sound-on.png";
 import SoundoffLogo from "../assests/mute.png";

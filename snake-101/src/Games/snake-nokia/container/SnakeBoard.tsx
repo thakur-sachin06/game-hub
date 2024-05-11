@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+
 import useSound from "use-sound";
-import eatSound from "../sounds/eat.wav";
-import gameOverSound from "../sounds/game-over.wav";
+import eatSound from "../../../sounds/eat.wav";
+import gameOverSound from "../../../sounds/game-over.wav";
 
 import SnakeEngine from "./SnakeEngine";
-import { SnakeDirectionType } from "./types";
+import { SnakeDirectionType } from "../types";
 import { ALLOWED_DIRECTIONS, BOARD, INITIAL_GAME_SPEED } from "../constants";
 import GameHeader from "./GameHeader";
-import Modal from "../components/Modal";
+import Modal from "../../../components/Modal";
 
 import "./Board.css";
 
@@ -94,12 +95,12 @@ function SnakeBoard() {
   const initializeGameState = useCallback(() => {
     setContext(null);
     snakes.current = null;
-    setIsPlaying(null);
     setIsPaused(false);
     setIsGameOver(false);
     setSnakeDirection("RIGHT");
     setSnakeSpeed(INITIAL_GAME_SPEED);
     setScore(0);
+    setIsPlaying(true);
   }, []);
 
   const handleGamePlay = useCallback(() => {

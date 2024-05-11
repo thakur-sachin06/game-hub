@@ -14,7 +14,7 @@ const ALLOWED_DIRECTIONS = {
 };
 
 const BOARD = {
-  height: 650,
+  height: 700,
   width: 1000,
 };
 

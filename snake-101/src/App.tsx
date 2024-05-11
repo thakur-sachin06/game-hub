@@ -1,6 +1,6 @@
 import "./App.css";
 
-import SnakeBoard from "./container/SnakeBoard";
+import SnakeBoard from "./Games/snake-nokia/container/SnakeBoard";
 
 function App() {
   return (

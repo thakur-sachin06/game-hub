@@ -1,4 +1,5 @@
 import useSound from "use-sound";
+
 import click from "../../sounds/click.wav";
 
 import "./ButtonStyles.css";

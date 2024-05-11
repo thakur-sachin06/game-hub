@@ -1,6 +1,7 @@
 import { BOARD, OBJECT_SIZE, SNAKE_DIRECTION } from "../constants";
-import { getRandomFoodPosition } from "../helpers";
-import { SnakeDirectionType } from "./types";
+
+import { getRandomFoodPosition } from "./helpers";
+import { SnakeDirectionType } from "../types";
 
 interface SnakeCordsIF {
   x: number;
